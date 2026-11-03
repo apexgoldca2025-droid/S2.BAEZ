@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anatomía Interactiva del Sistema Respiratorio</title>
+    <title>Anatomía del Sistema Respiratorio</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -14,495 +14,161 @@
             color: #c9d1d9;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-        canvas {
-            border-radius: 0.75rem;
-            cursor: pointer;
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #161b22;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #30363d;
-            border-radius: 3px;
-        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-4 md:p-6 custom-scrollbar">
+<body class="min-h-screen flex flex-col justify-between p-4 md:p-6">
 
-    <!-- Header -->
-    <header class="max-w-6xl w-full mx-auto mb-4 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-3 border-b border-gray-800 pb-3">
-        <div>
-            <h1 class="text-2xl md:text-3xl font-bold text-white tracking-wide flex items-center gap-2 justify-center md:justify-start">
+    <div class="max-w-4xl w-full mx-auto flex flex-col gap-6 my-auto">
+        
+        <!-- Header -->
+        <header class="border-b border-gray-800 pb-4 text-center md:text-left">
+            <h1 class="text-2xl md:text-3xl font-bold text-white tracking-wide flex items-center justify-center md:justify-start gap-3">
                 <i class="fa-solid fa-lungs text-sky-400"></i> Anatomía del Sistema Respiratorio
             </h1>
             <p class="text-xs md:text-sm text-gray-400 mt-1">
-                Visualización de la Vía Aérea Superior e Inferior con Flujo de Oxígeno (O₂)
+                Selecciona un órgano para explorar su estructura y función fisiológica
             </p>
-        </div>
-        <div class="flex items-center gap-2">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-sky-950 text-sky-400 border border-sky-800">
-                <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
-                Ingreso de O₂ Activo
-            </span>
-        </div>
-    </header>
+        </header>
 
-    <!-- Main Content Grid -->
-    <main class="max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 my-auto">
-        
-        <!-- Interactive Canvas Model Area -->
-        <div class="lg:col-span-2 bg-[#161b22] border border-gray-800 rounded-xl p-4 flex flex-col justify-between shadow-2xl">
-            
-            <div class="flex items-center justify-between mb-2 px-1">
-                <div class="flex items-center gap-3 text-xs md:text-sm font-medium">
-                    <span class="text-gray-300">Vía de ingreso:</span>
-                    <button id="pathNasalBtn" class="px-2.5 py-1 rounded bg-sky-600 text-white font-medium text-xs shadow-sm transition">
-                        Nasal (Nariz)
-                    </button>
-                    <button id="pathOralBtn" class="px-2.5 py-1 rounded bg-gray-800 text-gray-300 hover:bg-gray-700 font-medium text-xs transition">
-                        Oral (Boca)
-                    </button>
-                </div>
-                <div class="text-xs text-gray-400 italic hidden sm:block">
-                    Haz clic en cualquier órgano para inspeccionarlo
-                </div>
+        <!-- Container Exclusivo para la Imagen -->
+        <section class="w-full bg-[#161b22] border border-gray-800 rounded-xl p-3 md:p-4 shadow-2xl flex justify-center items-center overflow-hidden">
+            <div class="relative w-full max-w-lg aspect-[4/5] bg-slate-950 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden shadow-inner">
+                <img 
+                    src="anatomia.jpg" 
+                    alt="Anatomía del Sistema Respiratorio" 
+                    class="w-full h-full object-contain block"
+                    onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'p-6 text-center text-gray-400 text-xs md:text-sm flex flex-col items-center justify-center h-full gap-2\'><i class=\'fa-regular fa-image text-3xl text-sky-400\'></i><p><strong class=\'text-gray-200\'>Imagen anatomia.jpg no detectada</strong></p><p class=\'text-xs text-gray-500 max-w-xs\'>Asegúrate de subir el archivo <strong>anatomia.jpg</strong> en la misma carpeta que tu <strong>index.html</strong> en tu repositorio de GitHub.</p></div>';"
+                >
+            </div>
+        </section>
+
+        <!-- Botones de Selección de Órganos -->
+        <nav aria-label="Selección de Órganos" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <button id="btnNasal" onclick="selectOrgan('nasal')" class="organ-btn bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs md:text-sm py-3 px-3 rounded-xl border border-sky-500 transition-all flex items-center justify-center gap-2 shadow-lg">
+                <i class="fa-solid fa-wind"></i> Fosa Nasal
+            </button>
+            <button id="btnOral" onclick="selectOrgan('oral')" class="organ-btn bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium text-xs md:text-sm py-3 px-3 rounded-xl border border-gray-700 transition-all flex items-center justify-center gap-2 shadow-lg">
+                <i class="fa-solid fa-lips"></i> Cavidad Oral
+            </button>
+            <button id="btnTrachea" onclick="selectOrgan('trachea')" class="organ-btn bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium text-xs md:text-sm py-3 px-3 rounded-xl border border-gray-700 transition-all flex items-center justify-center gap-2 shadow-lg">
+                <i class="fa-solid fa-pipe"></i> Tráquea
+            </button>
+            <button id="btnLungs" onclick="selectOrgan('lungs')" class="organ-btn bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium text-xs md:text-sm py-3 px-3 rounded-xl border border-gray-700 transition-all flex items-center justify-center gap-2 shadow-lg">
+                <i class="fa-solid fa-lungs"></i> Pulmones
+            </button>
+        </nav>
+
+        <!-- Tarjeta Informativa del Órgano Seleccionado -->
+        <section class="bg-[#161b22] border border-gray-800 rounded-xl p-5 md:p-6 shadow-xl">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-3 mb-4">
+                <h2 id="organTitle" class="text-lg md:text-xl font-bold text-sky-400 flex items-center gap-2">
+                    <i class="fa-solid fa-wind"></i> Fosa Nasal
+                </h2>
+                <span id="organCategory" class="text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-sky-300 font-medium">
+                    Vía Aérea Superior
+                </span>
             </div>
 
-            <!-- Canvas Display -->
-            <div class="relative w-full overflow-hidden bg-slate-950 rounded-lg border border-slate-800 shadow-inner flex justify-center items-center">
-                <canvas id="anatomyCanvas" class="w-full h-[380px] md:h-[420px] block"></canvas>
-            </div>
+            <p id="organDescription" class="text-xs md:text-sm text-gray-300 leading-relaxed mb-5">
+                Es la vía principal de entrada del aire al sistema respiratorio. Está recubierta por una mucosa especializada que tibia, humidifica y filtra el aire antes de que llegue a las vías inferiores.
+            </p>
 
-            <!-- Simulation Controls -->
-            <div class="mt-3 pt-3 border-t border-gray-800 flex flex-wrap items-center justify-between gap-3">
-                <div class="flex items-center gap-2">
-                    <button id="playPauseBtn" class="bg-sky-600 hover:bg-sky-500 text-white text-xs px-3.5 py-2 rounded-lg font-medium transition flex items-center gap-2">
-                        <i class="fa-solid fa-pause"></i> <span>Pausar</span>
-                    </button>
-                    <button id="resetFlowBtn" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs px-3 py-2 rounded-lg font-medium transition">
-                        <i class="fa-solid fa-rotate-left"></i> Reiniciar
-                    </button>
+            <div id="organDetails" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs md:text-sm">
+                <div class="p-3 bg-slate-900/80 rounded-lg border border-slate-800">
+                    <span class="font-semibold text-sky-300 block mb-1">Acondicionamiento Térmico</span>
+                    <p class="text-gray-400">Los plexos vasculares calientan el aire inhalado hasta aproximadamente la temperatura corporal (37°C).</p>
                 </div>
-
-                <div class="flex items-center gap-2 text-xs text-gray-400">
-                    <span>Densidad O₂:</span>
-                    <select id="densitySelect" class="bg-gray-800 text-gray-200 border border-gray-700 rounded-md px-2 py-1 text-xs focus:outline-none">
-                        <option value="normal">Normal</option>
-                        <option value="high">Abundante</option>
-                    </select>
+                <div class="p-3 bg-slate-900/80 rounded-lg border border-slate-800">
+                    <span class="font-semibold text-sky-300 block mb-1">Filtración Mucociliar</span>
+                    <p class="text-gray-400">Los vellos nasales y la capa mucosa atrapan partículas, polvo y microrganismos suspendidos.</p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Educational Information Panel -->
-        <div class="bg-[#161b22] border border-gray-800 rounded-xl p-5 shadow-xl flex flex-col justify-between">
-            <div>
-                <div class="flex items-center justify-between border-b border-gray-800 pb-3 mb-3">
-                    <h2 id="organTitle" class="text-lg font-bold text-sky-400 flex items-center gap-2">
-                        <i class="fa-solid fa-lungs"></i> Sistema Respiratorio
-                    </h2>
-                    <span id="organCategory" class="text-[11px] px-2 py-0.5 rounded bg-gray-800 text-gray-300">Anatomía General</span>
-                </div>
-
-                <p id="organDescription" class="text-xs md:text-sm text-gray-300 leading-relaxed mb-4">
-                    Selecciona un órgano en la ilustración para explorar su función dentro del tracto respiratorio humano.
-                </p>
-
-                <div id="organDetails" class="space-y-2.5 text-xs">
-                    <div class="p-2.5 bg-slate-900/60 rounded-lg border border-slate-800">
-                        <span class="font-semibold text-sky-300 block mb-1">Filtración y Acondicionamiento</span>
-                        <p class="text-gray-400">La mucosa respiratoria humidifica, calienta y filtra el aire inhalado mediante cilios microscópicos.</p>
-                    </div>
-                    <div class="p-2.5 bg-slate-900/60 rounded-lg border border-slate-800">
-                        <span class="font-semibold text-sky-300 block mb-1">Conducción de Gas</span>
-                        <p class="text-gray-400">La tráquea mantiene la vía aérea permeable gracias a sus semianillos cartilaginosos.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-4 pt-3 border-t border-gray-800 text-[11px] text-gray-500 flex justify-between items-center">
-                <span>Tracto Respiratorio Superior e Inferior</span>
-                <span class="text-sky-400">O₂ Activo</span>
-            </div>
-        </div>
-
-    </main>
+    </div>
 
     <!-- Footer -->
-    <footer class="max-w-6xl w-full mx-auto mt-6 pt-3 border-t border-gray-800 text-center text-xs text-gray-500">
+    <footer class="max-w-4xl w-full mx-auto mt-8 pt-4 border-t border-gray-800 text-center text-xs text-gray-500">
         <p>Desarrollado por Alfredo Belandria</p>
     </footer>
 
-    <!-- Interactive Canvas & Anatomy Logic -->
+    <!-- Lógica de Selección -->
     <script>
-        const canvas = document.getElementById('anatomyCanvas');
-        const ctx = canvas.getContext('2d');
-
-        // UI Panels
-        const organTitle = document.getElementById('organTitle');
-        const organCategory = document.getElementById('organCategory');
-        const organDescription = document.getElementById('organDescription');
-        const organDetails = document.getElementById('organDetails');
-
-        // Buttons
-        const pathNasalBtn = document.getElementById('pathNasalBtn');
-        const pathOralBtn = document.getElementById('pathOralBtn');
-        const playPauseBtn = document.getElementById('playPauseBtn');
-
-        // State
-        let isRunning = true;
-        let selectedOrgan = null;
-        let airPath = 'nasal'; // 'nasal' or 'oral'
-        let oxygenDensity = 'normal';
-        let breathCycle = 0;
-
-        // Resize Canvas
-        function resizeCanvas() {
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width;
-            canvas.height = rect.height;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        // Organ Information Data
         const organData = {
             nasal: {
-                title: "Cavidad Nasal",
+                title: "Fosa Nasal",
                 category: "Vía Aérea Superior",
-                desc: "Es el punto de entrada preferido para el aire. Sus cornetes y mucosa están recubiertos de vasos sanguíneos que calientan, humidifican y filtran las partículas suspendidas.",
+                icon: "fa-wind",
+                desc: "Es la vía preferente de entrada del aire ambiental. La cavidad nasal está tapizada por la mucosa respiratoria, rica en vasos sanguíneos y células caliciformes que acondicionan el aire antes de su paso a la tráquea.",
                 points: [
-                    { title: "Filtración Ciliar", text: "Atrapa polvo y patógenos en el moco." },
-                    { title: "Acondicionamiento Térmico", text: "Eleva la temperatura del aire hacia la corporal (37°C)." }
+                    { title: "Acondicionamiento Térmico", text: "Eleva la temperatura del aire hasta aproximadamente 37°C para no irritar la vía aérea inferior." },
+                    { title: "Filtración Ciliar", text: "Atrapa partículas extrañas y las desplaza mediante el batido ciliar hacia la nasofaringe." }
                 ]
             },
             oral: {
                 title: "Cavidad Oral",
                 category: "Vía Aérea Accesoria",
-                desc: "Vía alternativa de ingreso para un mayor volumen de aire durante el ejercicio o la obstrucción nasal. Calienta y humidifica el aire con menor eficiencia que la cavidad nasal.",
+                icon: "fa-lips",
+                desc: "Funciona como vía alternativa o complementaria para la entrada de aire, especialmente durante esfuerzos físicos intensos o en situaciones de obstrucción nasal.",
                 points: [
-                    { title: "Mayor Caudal", text: "Permite una rápida ventilación de alto volumen." },
-                    { title: "Faringe Común", text: "Conecta con la orofaringe antes de ingresar a la laringe." }
+                    { title: "Mayor Volumen de Ventilación", text: "Ofrece menor resistencia al paso del aire, permitiendo un flujo de mayor caudal." },
+                    { title: "Pasaje Faringeo", text: "El aire ingresa directamente por la orofaringe para unirse al trayecto común hacia la laringe." }
                 ]
             },
             trachea: {
                 title: "Tráquea",
                 category: "Vía Aérea Inferior",
-                desc: "Tubo cartilaginoso flexible de unos 10-12 cm que conduce el aire desde la laringe hacia los bronquios principales izquierdo y derecho.",
+                desc: "Conducto cartilaginoso y membranoso de unos 10 a 12 cm de longitud que comunica la laringe con los bronquios principales izquierdo y derecho.",
+                icon: "fa-pipe",
                 points: [
-                    { title: "Anillos Cartilaginosos", text: "16-20 anillos en C que impiden el colapso del conducto." },
-                    { title: "Escalador Mucociliar", text: "Expulsa la mucosidad cargada de partículas atrapadas hacia la faringe." }
+                    { title: "Sostén Cartilaginoso", text: "Compuesta por 16 a 20 anillos cartilaginosos en forma de 'C' que evitan el colapso durante la inspiración." },
+                    { title: "Limpieza Continuada", text: "El epitelio ciliado expulsa activamente la mucosidad cargada de impurezas hacia la laringe." }
                 ]
             },
             lungs: {
-                title: "Pulmones y Bronquios",
+                title: "Pulmones",
                 category: "Órganos Respiratorios Principales",
-                desc: "Órganos esponjosos divididos en lóbulos (3 en el derecho, 2 en el izquierdo) donde los bronquios se ramifican en bronquiolos hasta alcanzar los alvéolos para el intercambio gaseoso.",
+                icon: "fa-lungs",
+                desc: "Órganos esenciales de la respiración donde los bronquios se dividen sucesivamente hasta los alvéolos, facilitando el proceso de hematosis o intercambio gaseoso.",
                 points: [
-                    { title: "Pulmón Derecho", text: "Consta de 3 lóbulos (superior, medio e inferior)." },
-                    { title: "Pulmón Izquierdo", text: "Posee 2 lóbulos para alojar la escotadura cardíaca del corazón." }
+                    { title: "Anatomía Lobular", text: "El pulmón derecho presenta 3 lóbulos (superior, medio e inferior); el izquierdo tiene 2 lóbulos para dar espacio al corazón." },
+                    { title: "Intercambio Gaseoso", text: "A nivel alveolar, el O₂ pasa a los capilares sanguíneos y se elimina el CO₂ de desecho." }
                 ]
             }
         };
 
-        // Oxygen Particle Class
-        class OxygenParticle {
-            constructor() {
-                this.reset();
-            }
-
-            reset() {
-                this.progress = Math.random() * -0.2; // Staggered start
-                this.speed = 0.003 + Math.random() * 0.002;
-                this.radius = 3.5 + Math.random() * 1.5;
-                this.offsetY = (Math.random() - 0.5) * 6;
-                this.offsetX = (Math.random() - 0.5) * 6;
-                this.targetLung = Math.random() < 0.5 ? 'left' : 'right';
-            }
-
-            update() {
-                if (!isRunning) return;
-                this.progress += this.speed;
-                if (this.progress > 1) {
-                    this.reset();
-                }
-            }
-
-            draw(w, h) {
-                if (this.progress < 0) return;
-
-                let px = 0, py = 0;
-
-                // Path points mapped on profile scale
-                const startX = airPath === 'nasal' ? w * 0.63 : w * 0.61;
-                const startY = airPath === 'nasal' ? h * 0.22 : h * 0.29;
-
-                const pharynxX = w * 0.50;
-                const pharynxY = h * 0.32;
-
-                const tracheaTopX = w * 0.50;
-                const tracheaTopY = h * 0.42;
-
-                const carinaX = w * 0.50;
-                const carinaY = h * 0.55;
-
-                // Interpolation along trajectory
-                if (this.progress < 0.25) {
-                    const t = this.progress / 0.25;
-                    px = startX + (pharynxX - startX) * t;
-                    py = startY + (pharynxY - startY) * t;
-                } else if (this.progress < 0.5) {
-                    const t = (this.progress - 0.25) / 0.25;
-                    px = pharynxX + (tracheaTopX - pharynxX) * t;
-                    py = pharynxY + (tracheaTopY - pharynxY) * t;
-                } else if (this.progress < 0.7) {
-                    const t = (this.progress - 0.5) / 0.2;
-                    px = tracheaTopX + (carinaX - tracheaTopX) * t;
-                    py = tracheaTopY + (carinaY - tracheaTopY) * t;
-                } else {
-                    const t = (this.progress - 0.7) / 0.3;
-                    const lungX = this.targetLung === 'right' ? w * 0.37 : w * 0.63;
-                    const lungY = h * 0.72;
-                    px = carinaX + (lungX - carinaX) * t;
-                    py = carinaY + (lungY - carinaY) * t;
-                }
-
-                px += this.offsetX;
-                py += this.offsetY;
-
-                ctx.save();
-                ctx.beginPath();
-                ctx.arc(px, py, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = '#60a5fa';
-                ctx.shadowColor = 'rgba(96, 165, 250, 0.9)';
-                ctx.shadowBlur = 8;
-                ctx.fill();
-
-                // Bright core
-                ctx.fillStyle = '#ffffff';
-                ctx.beginPath();
-                ctx.arc(px - 1, py - 1, this.radius * 0.35, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-            }
-        }
-
-        let o2Particles = [];
-        function initParticles() {
-            o2Particles = [];
-            const count = oxygenDensity === 'high' ? 65 : 35;
-            for (let i = 0; i < count; i++) {
-                o2Particles.push(new OxygenParticle());
-            }
-        }
-
-        // Draw Human Silhouette & Respiratory Organs (Based on Google anatomical reference)
-        function drawAnatomy() {
-            const w = canvas.width;
-            const h = canvas.height;
-
-            // 1. Human Body Silhouette (Frontal Chest with Right-facing Head Profile)
-            ctx.save();
-            ctx.fillStyle = '#fce7f3';
-            ctx.strokeStyle = '#fbcfe8';
-            ctx.lineWidth = 1.5;
-            ctx.globalAlpha = 0.3;
-
-            ctx.beginPath();
-            // Crown / Head
-            ctx.arc(w * 0.50, h * 0.18, w * 0.16, Math.PI * 0.9, Math.PI * 1.9);
-            // Forehead to Nose profile
-            ctx.lineTo(w * 0.65, h * 0.18);
-            ctx.lineTo(w * 0.68, h * 0.22); // Nose tip
-            ctx.lineTo(w * 0.63, h * 0.26); // Nostril / Upper Lip
-            ctx.lineTo(w * 0.62, h * 0.29); // Mouth / Lips
-            ctx.lineTo(w * 0.60, h * 0.33); // Chin
-            ctx.lineTo(w * 0.56, h * 0.37); // Neck
-            // Right Shoulder & Torso
-            ctx.lineTo(w * 0.82, h * 0.48);
-            ctx.lineTo(w * 0.85, h * 0.95);
-            // Left Torso & Shoulder
-            ctx.lineTo(w * 0.15, h * 0.95);
-            ctx.lineTo(w * 0.18, h * 0.48);
-            ctx.lineTo(w * 0.44, h * 0.37); // Left Neck
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
-            ctx.restore();
-
-            // 2. Nasal Cavity (Upper pink chamber)
-            ctx.save();
-            ctx.fillStyle = selectedOrgan === 'nasal' ? '#f43f5e' : '#fda4af';
-            ctx.globalAlpha = selectedOrgan === 'nasal' ? 0.9 : 0.75;
-            ctx.beginPath();
-            ctx.moveTo(w * 0.66, h * 0.22);
-            ctx.quadraticCurveTo(w * 0.55, h * 0.16, w * 0.48, h * 0.24);
-            ctx.quadraticCurveTo(w * 0.54, h * 0.30, w * 0.62, h * 0.25);
-            ctx.closePath();
-            ctx.fill();
-            ctx.restore();
-
-            // 3. Oral Cavity & Pharynx Channel
-            ctx.save();
-            ctx.fillStyle = selectedOrgan === 'oral' ? '#f43f5e' : '#fecdd3';
-            ctx.globalAlpha = selectedOrgan === 'oral' ? 0.9 : 0.75;
-            ctx.beginPath();
-            ctx.moveTo(w * 0.61, h * 0.28);
-            ctx.quadraticCurveTo(w * 0.52, h * 0.28, w * 0.49, h * 0.32);
-            ctx.lineTo(w * 0.51, h * 0.38);
-            ctx.quadraticCurveTo(w * 0.56, h * 0.33, w * 0.61, h * 0.30);
-            ctx.closePath();
-            ctx.fill();
-            ctx.restore();
-
-            // 4. Trachea with Cartilage Rings
-            ctx.save();
-            const tracheaX = w * 0.50;
-            const tracheaY = h * 0.40;
-            const tracheaH = h * 0.15;
-            
-            ctx.fillStyle = selectedOrgan === 'trachea' ? '#38bdf8' : '#e0f2fe';
-            ctx.strokeStyle = '#93c5fd';
-            ctx.lineWidth = 2;
-
-            // Main Tube
-            ctx.beginPath();
-            ctx.rect(tracheaX - 8, tracheaY, 16, tracheaH);
-            ctx.fill();
-            ctx.stroke();
-
-            // Cartilage Rings
-            ctx.strokeStyle = '#0284c7';
-            ctx.lineWidth = 1.5;
-            for (let y = tracheaY + 4; y < tracheaY + tracheaH; y += 6) {
-                ctx.beginPath();
-                ctx.moveTo(tracheaX - 7, y);
-                ctx.lineTo(tracheaX + 7, y);
-                ctx.stroke();
-            }
-            ctx.restore();
-
-            // 5. Lungs with Inhalation Expansion Breathing Effect
-            ctx.save();
-            const lungScale = 1 + Math.sin(breathCycle) * 0.03;
-            ctx.translate(w * 0.5, h * 0.72);
-            ctx.scale(lungScale, lungScale);
-            ctx.translate(-w * 0.5, -h * 0.72);
-
-            // Right Lung (3 Lobes) - Left on Canvas View
-            ctx.fillStyle = selectedOrgan === 'lungs' ? '#e11d48' : '#f43f5e';
-            ctx.beginPath();
-            ctx.moveTo(w * 0.48, h * 0.57);
-            ctx.quadraticCurveTo(w * 0.32, h * 0.55, w * 0.28, h * 0.72);
-            ctx.quadraticCurveTo(w * 0.30, h * 0.88, w * 0.46, h * 0.86);
-            ctx.quadraticCurveTo(w * 0.47, h * 0.72, w * 0.48, h * 0.57);
-            ctx.fill();
-
-            // Left Lung (2 Lobes with Cardiac Notch) - Right on Canvas View
-            ctx.beginPath();
-            ctx.moveTo(w * 0.52, h * 0.57);
-            ctx.quadraticCurveTo(w * 0.68, h * 0.55, w * 0.72, h * 0.72);
-            ctx.quadraticCurveTo(w * 0.70, h * 0.88, w * 0.54, h * 0.86);
-            ctx.quadraticCurveTo(w * 0.56, h * 0.73, w * 0.52, h * 0.57);
-            ctx.fill();
-
-            ctx.restore();
-        }
-
-        // Render Loop
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            if (isRunning) {
-                breathCycle += 0.03;
-            }
-
-            // Draw Background Anatomy
-            drawAnatomy();
-
-            // Update & Draw Oxygen Particles
-            o2Particles.forEach(p => {
-                p.update();
-                p.draw(canvas.width, canvas.height);
-            });
-
-            requestAnimationFrame(animate);
-        }
-
-        // UI Interactions
-        function updateInfoPanel(key) {
-            selectedOrgan = key;
+        function selectOrgan(key) {
             const data = organData[key];
             if (!data) return;
 
-            organTitle.innerText = data.title;
-            organCategory.innerText = data.category;
-            organDescription.innerText = data.desc;
+            // Actualizar botones
+            const buttons = {
+                nasal: document.getElementById('btnNasal'),
+                oral: document.getElementById('btnOral'),
+                trachea: document.getElementById('btnTrachea'),
+                lungs: document.getElementById('btnLungs')
+            };
 
-            organDetails.innerHTML = data.points.map(pt => `
-                <div class="p-2.5 bg-slate-900/60 rounded-lg border border-slate-800">
-                    <span class="font-semibold text-sky-300 block mb-0.5">${pt.title}</span>
+            Object.keys(buttons).forEach(k => {
+                if (k === key) {
+                    buttons[k].className = "organ-btn bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs md:text-sm py-3 px-3 rounded-xl border border-sky-500 transition-all flex items-center justify-center gap-2 shadow-lg";
+                } else {
+                    buttons[k].className = "organ-btn bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium text-xs md:text-sm py-3 px-3 rounded-xl border border-gray-700 transition-all flex items-center justify-center gap-2 shadow-lg";
+                }
+            });
+
+            // Actualizar información
+            document.getElementById('organTitle').innerHTML = `<i class="fa-solid ${data.icon}"></i> ${data.title}`;
+            document.getElementById('organCategory').innerText = data.category;
+            document.getElementById('organDescription').innerText = data.desc;
+
+            document.getElementById('organDetails').innerHTML = data.points.map(pt => `
+                <div class="p-3 bg-slate-900/80 rounded-lg border border-slate-800">
+                    <span class="font-semibold text-sky-300 block mb-1">${pt.title}</span>
                     <p class="text-gray-400">${pt.text}</p>
                 </div>
             `).join('');
         }
-
-        // Click organ on Canvas
-        canvas.addEventListener('click', function(e) {
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            const w = canvas.width;
-            const h = canvas.height;
-
-            if (y < h * 0.26 && x > w * 0.45) {
-                updateInfoPanel('nasal');
-            } else if (y >= h * 0.26 && y < h * 0.36 && x > w * 0.45) {
-                updateInfoPanel('oral');
-            } else if (y >= h * 0.36 && y < h * 0.55) {
-                updateInfoPanel('trachea');
-            } else if (y >= h * 0.55) {
-                updateInfoPanel('lungs');
-            }
-        });
-
-        // Airway toggle
-        pathNasalBtn.addEventListener('click', () => {
-            airPath = 'nasal';
-            pathNasalBtn.className = "px-2.5 py-1 rounded bg-sky-600 text-white font-medium text-xs shadow-sm transition";
-            pathOralBtn.className = "px-2.5 py-1 rounded bg-gray-800 text-gray-300 hover:bg-gray-700 font-medium text-xs transition";
-            updateInfoPanel('nasal');
-        });
-
-        pathOralBtn.addEventListener('click', () => {
-            airPath = 'oral';
-            pathOralBtn.className = "px-2.5 py-1 rounded bg-sky-600 text-white font-medium text-xs shadow-sm transition";
-            pathNasalBtn.className = "px-2.5 py-1 rounded bg-gray-800 text-gray-300 hover:bg-gray-700 font-medium text-xs transition";
-            updateInfoPanel('oral');
-        });
-
-        playPauseBtn.addEventListener('click', function() {
-            isRunning = !isRunning;
-            this.querySelector('span').innerText = isRunning ? 'Pausar' : 'Reanudar';
-            this.querySelector('i').className = isRunning ? 'fa-solid fa-pause' : 'fa-solid fa-play';
-        });
-
-        document.getElementById('resetFlowBtn').addEventListener('click', () => {
-            initParticles();
-        });
-
-        document.getElementById('densitySelect').addEventListener('change', (e) => {
-            oxygenDensity = e.target.value;
-            initParticles();
-        });
-
-        // Initialize Application
-        initParticles();
-        animate();
     </script>
 </body>
 </html>
