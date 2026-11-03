@@ -30,14 +30,14 @@
             </p>
         </header>
 
-        <!-- Container Exclusivo para la Imagen -->
-        <section class="w-full bg-[#161b22] border border-gray-800 rounded-xl p-3 md:p-4 shadow-2xl flex justify-center items-center overflow-hidden">
-            <div class="relative w-full max-w-lg aspect-[4/5] bg-slate-950 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden shadow-inner">
+        <!-- Container Exclusivo para la Imagen (Ajustado a 1080x589) -->
+        <section class="w-full bg-[#161b22] border border-gray-800 rounded-xl p-2 md:p-3 shadow-2xl flex justify-center items-center overflow-hidden">
+            <div class="relative w-full aspect-[1080/589] bg-transparent rounded-lg flex items-center justify-center overflow-hidden">
                 <img 
                     src="IMG-20261103-WA0048.jpg" 
                     alt="Anatomía del Sistema Respiratorio" 
                     class="w-full h-full object-contain block"
-                    onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'p-6 text-center text-gray-400 text-xs md:text-sm flex flex-col items-center justify-center h-full gap-2\'><i class=\'fa-regular fa-image text-3xl text-sky-400\'></i><p><strong class=\'text-gray-200\'>Imagen anatomia.jpg no detectada</strong></p><p class=\'text-xs text-gray-500 max-w-xs\'>Asegúrate de subir el archivo <strong>anatomia.jpg</strong> en la misma carpeta que tu <strong>index.html</strong> en tu repositorio de GitHub.</p></div>';"
+                    onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'p-6 text-center text-gray-400 text-xs md:text-sm flex flex-col items-center justify-center h-full gap-2\'><i class=\'fa-regular fa-image text-3xl text-sky-400\'></i><p><strong class=\'text-gray-200\'>Imagen no detectada</strong></p><p class=\'text-xs text-gray-500 max-w-xs\'>Asegúrate de subir el archivo correctamente.</p></div>';"
                 >
             </div>
         </section>
@@ -141,7 +141,6 @@
             const data = organData[key];
             if (!data) return;
 
-            // Actualizar botones
             const buttons = {
                 nasal: document.getElementById('btnNasal'),
                 oral: document.getElementById('btnOral'),
@@ -157,7 +156,6 @@
                 }
             });
 
-            // Actualizar información
             document.getElementById('organTitle').innerHTML = `<i class="fa-solid ${data.icon}"></i> ${data.title}`;
             document.getElementById('organCategory').innerText = data.category;
             document.getElementById('organDescription').innerText = data.desc;
